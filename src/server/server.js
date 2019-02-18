@@ -1,10 +1,28 @@
 import express from 'express';
 import path from 'path';
+import request from 'request-promise-native';
+import cheerio from 'cheerio';
 
 const app = express();
 
 app.use(express.static('public'));
 app.use(express.json());
+
+app.get('/api/parse', async (req, res) => {
+  const options = {
+    uri: req.query.uri,
+    transform: body => {
+      return cheerio.load(body);
+    }
+  };
+
+  try {
+    const $ = await request(options);
+    res.send($('meta[itemprop="price"]').attr('content'));
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('public/index.html'));

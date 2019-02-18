@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "webpack --mode development",
     "watch": "webpack-dev-server --mode development --watch",
-    "start": "nodemon -r esm -w server src/server/server.js",
+    "start": "nodemon -r esm -w src/server src/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext js,jsx src server webpack.config.js"
   },
@@ -14,13 +14,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
     "esm": "^3.2.4",
     "express": "^4.16.4",
     "prop-types": "^15.7.1",
     "querystringify": "^2.1.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
