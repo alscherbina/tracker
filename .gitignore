@@ -7,7 +7,7 @@
 /coverage
 
 # production
-#/static
+/public
 
 # misc
 .DS_Store
