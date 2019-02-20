@@ -1,9 +1,11 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
     app: './src/client/App.js',
-    vendor: ['react', 'react-dom', 'react-router-dom', 'querystringify']
+    vendor: ['react', 'react-dom', 'react-router-dom', 'querystringify', '@material-ui/core', '@material-ui/icons']
   },
   output: {
     path: path.resolve(__dirname, 'public'),
@@ -21,6 +23,15 @@ module.exports = {
       }
     }
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: './public/style.css',
+      chunkFilename: '[name].css'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/client/index.html'
+    })
+  ],
   module: {
     rules: [
       {
@@ -33,8 +44,15 @@ module.exports = {
             plugins: ['@babel/plugin-proposal-class-properties']
           }
         }
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       }
     ]
+  },
+  resolve: {
+    extensions: ['.js', '.css']
   },
   devServer: {
     port: 8000,
