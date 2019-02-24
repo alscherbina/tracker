@@ -1,22 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AppBar from '@material-ui/core/AppBar';
-import { Toolbar , IconButton, Typography } from '@material-ui/core/Toolbar';
-import { Menu as MenuIcon } from '@material-ui/icons';
+import 'bulma/css/bulma.min.css';
+import TasksList from './components/TasksList';
+import Layout from './components/Layout';
+import TasksFilter from './components/TasksFilter';
+import AddTask from './components/AddTask';
 
 const contentNode = document.getElementById('contents');
 
 const app = (
-  <AppBar position="static">
-    <Toolbar>
-      <IconButton color="inherit" aria-label="Menu">
-        <MenuIcon />
-      </IconButton>
-      <Typography variant="h6" color="inherit">
-        Tracker
-      </Typography>
-    </Toolbar>
-  </AppBar>
+  <div className="columns">
+    <aside className="column is-narrow">
+      <TasksFilter />
+      <AddTask />
+    </aside>
+    <div className="column">
+      <TasksList />
+    </div>
+  </div>
 );
 
 ReactDOM.render(app, contentNode);

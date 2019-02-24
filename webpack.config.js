@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: {
     app: './src/client/App.js',
-    vendor: ['react', 'react-dom', 'react-router-dom', 'querystringify', '@material-ui/core', '@material-ui/icons']
+    vendor: ['react', 'react-dom', 'react-router-dom', 'querystringify']
   },
   output: {
     path: path.resolve(__dirname, 'public'),
