@@ -24,6 +24,11 @@ app.get('/api/parse', async (req, res) => {
   }
 });
 
+app.post('/api/tasks', (req, res) => {
+  res.send('post request');
+  console.log(req.body);
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('public/index.html'));
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bulma/css/bulma.min.css';
+import 'regenerator-runtime/runtime';
 import TasksList from './components/TasksList';
 import Layout from './components/Layout';
 import TasksFilter from './components/TasksFilter';

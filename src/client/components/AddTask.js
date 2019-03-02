@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
 import { Formik, Field, Form } from 'formik';
+import axios from '../axios-tasks';
 
 export default class AddTask extends Component {
   state = {
@@ -20,8 +21,15 @@ export default class AddTask extends Component {
     this.setState(prevState => ({ taskEditModalActive: !prevState.taskEditModalActive }));
   };
 
-  formSubmit = (values, actions) => {
-    console.log(values);
+  formSubmit = async (values, formikbag) => {
+    try {
+      const result = await axios.post('/tasks', values);
+      formikbag.setSubmitting(false);
+      console.log(result);
+    } catch (error) {
+      formikbag.setSubmitting(false);
+      console.log(error);
+    }
   };
 
   render() {
@@ -103,7 +111,11 @@ const TaskForm = ({ toggleModal, errors, status, touched, isSubmitting, handleSu
         </Form>
       </section>
       <footer className="modal-card-foot">
-        <button className="button is-success" type="button" onClick={handleSubmit}>
+        <button
+          className={`button is-success ${isSubmitting ? 'is-loading' : ''}`}
+          type="button"
+          onClick={handleSubmit}
+        >
           Save changes
         </button>
         <button className="button" type="button" onClick={toggleModal}>
