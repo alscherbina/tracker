@@ -2,13 +2,18 @@ import express from 'express';
 import path from 'path';
 import request from 'request-promise-native';
 import cheerio from 'cheerio';
+import registerTaskRoutes from './routes/tasks';
 
 const app = express();
 
 app.use(express.static('public'));
 app.use(express.json());
 
-app.get('/api/parse', async (req, res) => {
+const apiRouter = express.Router();
+registerTaskRoutes(apiRouter);
+app.use('/api', apiRouter);
+
+app.get('/parse', async (req, res) => {
   const options = {
     uri: req.query.uri,
     transform: body => {
@@ -22,11 +27,6 @@ app.get('/api/parse', async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-});
-
-app.post('/api/tasks', (req, res) => {
-  res.send('post request');
-  console.log(req.body);
 });
 
 app.get('*', (req, res) => {

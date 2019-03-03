@@ -5,7 +5,7 @@ DROP
 CREATE
     TABLE
         task ( id SERIAL PRIMARY KEY,
-        task_type VARCHAR(24) NOT NULL,
+        type VARCHAR(24) NOT NULL,
         url VARCHAR(512) NOT NULL UNIQUE,
         schedule VARCHAR(32) NOT NULL,
         title VARCHAR(256),
@@ -14,7 +14,7 @@ CREATE
 
 INSERT
     INTO
-        public.task (task_type,
+        public.task (type,
         url,
         schedule,
         title)
