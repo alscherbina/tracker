@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { Formik, Field, Form } from 'formik';
 import axios from '../axios-tasks';
+import * as Yup from 'yup';
 
 export default class AddTask extends Component {
   state = {
@@ -40,6 +41,7 @@ export default class AddTask extends Component {
         <Formik
           onSubmit={this.formSubmit}
           initialValues={this.formInitialValues}
+          validationSchema={TaskSchema}
           render={props => <TaskForm toggleModal={this.toggleModal} {...props} />}
         />
       );
@@ -55,39 +57,72 @@ export default class AddTask extends Component {
   }
 }
 
-const TaksFormField = ({ type, name, label, placeholder, selectValues }) => {
-  let control = null;
-  switch (type) {
-    case 'input':
-      control = <Field name={name} placeholder={placeholder} className="input" />;
-      break;
-    case 'select':
-      control = (
+const TaskSchema = Yup.object().shape({
+  type: Yup.string().required('Required'),
+  url: Yup.string()
+    .required('Required')
+    .url(),
+  title: Yup.string()
+    .min(5, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  schedule: Yup.string().required('Required')
+});
+
+const TaskSelectField = ({
+  field, // { name, value, onChange, onBlur }
+  form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+  label,
+  selectValues,
+  placeholder,
+  ...props
+}) => {
+  let error = null;
+  if (touched[field.name] && errors[field.name]) {
+    error = <p className="help is-danger">{errors[field.name]}</p>;
+  }
+  return (
+    <div className="field">
+      <label className="label">{label}</label>
+      <div className="control">
         <div className="select">
-          <Field name={name} component="select">
+          <select {...field} {...props}>
             <option value="" label={placeholder} />
             {selectValues.map(item => (
               <option value={item} key={item}>
                 {item}
               </option>
             ))}
-          </Field>
+          </select>
         </div>
-      );
-      break;
-    default:
-      break;
-  }
-
-  return (
-    <div className="field">
-      <label className="label">{label}</label>
-      <div className="control">{control}</div>
+      </div>
+      {error}
     </div>
   );
 };
 
-const TaskForm = ({ toggleModal, errors, status, touched, isSubmitting, handleSubmit }) => (
+const TaskInputField = ({
+  field, // { name, value, onChange, onBlur }
+  form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+  label,
+  ...props
+}) => {
+  let error = null;
+  if (touched[field.name] && errors[field.name]) {
+    error = <p className="help is-danger">{errors[field.name]}</p>;
+  }
+  return (
+    <div className="field">
+      <label className="label">{label}</label>
+      <div className="control">
+        <input type="text" {...field} {...props} className="input" />
+      </div>
+      {error}
+    </div>
+  );
+};
+
+const TaskForm = ({ toggleModal, isSubmitting, handleSubmit }) => (
   <div className="modal is-active">
     <div className="modal-background" onClick={toggleModal} />
     <div className="modal-card">
@@ -97,16 +132,17 @@ const TaskForm = ({ toggleModal, errors, status, touched, isSubmitting, handleSu
       </header>
       <section className="modal-card-body">
         <Form>
-          <TaksFormField
+          <Field
             name="type"
             type="select"
             label="Task Type"
             placeholder="Choose Type"
             selectValues={['rozetka', ['custom']]}
+            component={TaskSelectField}
           />
-          <TaksFormField name="url" type="input" label="Page URL" placeholder="URL" />
-          <TaksFormField name="title" type="input" label="Task Title" placeholder="Title" />
-          <TaksFormField name="schedule" type="input" label="Schedule" placeholder="Cron expression" />
+          <Field name="url" placeholder="URL" label="Page URL" component={TaskInputField} />
+          <Field name="title" placeholder="Title" label="Task Title" component={TaskInputField} />
+          <Field name="schedule" placeholder="Cron expression" label="Schedule" component={TaskInputField} />
           <input type="submit" className="is-invisible" />
         </Form>
       </section>
