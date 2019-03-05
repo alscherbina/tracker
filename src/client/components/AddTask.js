@@ -12,6 +12,7 @@ export default class AddTask extends Component {
   };
 
   formInitialValues = {
+    type: '',
     url: '',
     title: '',
     schedule: ''
@@ -132,18 +133,20 @@ const TaskForm = ({ toggleModal, isSubmitting, handleSubmit }) => (
       </header>
       <section className="modal-card-body">
         <Form>
-          <Field
-            name="type"
-            type="select"
-            label="Task Type"
-            placeholder="Choose Type"
-            selectValues={['rozetka', ['custom']]}
-            component={TaskSelectField}
-          />
-          <Field name="url" placeholder="URL" label="Page URL" component={TaskInputField} />
-          <Field name="title" placeholder="Title" label="Task Title" component={TaskInputField} />
-          <Field name="schedule" placeholder="Cron expression" label="Schedule" component={TaskInputField} />
-          <input type="submit" className="is-invisible" />
+          <fieldset {isSubmitting ? 'disabled' : ''}>
+            <Field
+              name="type"
+              type="select"
+              label="Task Type"
+              placeholder="Choose Type"
+              selectValues={['rozetka', ['custom']]}
+              component={TaskSelectField}
+            />
+            <Field name="url" placeholder="URL" label="Page URL" component={TaskInputField} />
+            <Field name="title" placeholder="Title" label="Task Title" component={TaskInputField} />
+            <Field name="schedule" placeholder="Cron expression" label="Schedule" component={TaskInputField} />
+            <input type="submit" className="is-invisible" />
+          </fieldset>
         </Form>
       </section>
       <footer className="modal-card-foot">
