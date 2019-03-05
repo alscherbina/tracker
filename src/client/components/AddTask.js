@@ -123,7 +123,7 @@ const TaskInputField = ({
   );
 };
 
-const TaskForm = ({ toggleModal, isSubmitting, handleSubmit }) => (
+const TaskForm = ({ toggleModal, isSubmitting, isValid, handleSubmit }) => (
   <div className="modal is-active">
     <div className="modal-background" onClick={toggleModal} />
     <div className="modal-card">
@@ -153,6 +153,7 @@ const TaskForm = ({ toggleModal, isSubmitting, handleSubmit }) => (
         <button
           className={`button is-success ${isSubmitting ? 'is-loading' : ''}`}
           type="button"
+          disabled={!isValid}
           onClick={handleSubmit}
         >
           Save changes
