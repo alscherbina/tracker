@@ -133,7 +133,7 @@ const TaskForm = ({ toggleModal, isSubmitting, handleSubmit }) => (
       </header>
       <section className="modal-card-body">
         <Form>
-          <fieldset {isSubmitting ? 'disabled' : ''}>
+          <fieldset disabled={isSubmitting}>
             <Field
               name="type"
               type="select"
