@@ -14,9 +14,7 @@ const controllerHandler = (controller, params) => async (req, res, next) => {
   const boundParams = params ? params(req, res, next) : [req, res, next];
   try {
     const result = await controller(...boundParams);
-    console.log('---sending response');
-    res.sendStatus(200);
-    //return res.json(result || { message: 'OK' });
+    return res.json(result || { message: 'OK' });
   } catch (error) {
     return res.status(500) && next(error);
   }

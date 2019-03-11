@@ -9,5 +9,5 @@ export async function addTask(req, res) {
     task.schedule = data.schedule;
     task.type = data.type;
   }
-  await tasksDao.addTask(task);
+  return await tasksDao.addTask(task);
 }
