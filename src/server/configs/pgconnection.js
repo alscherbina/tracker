@@ -1,15 +1,16 @@
-const config = {
+import config from './vars';
+
+const pgConfigs = {
   development: {
     client: 'pg',
-    connection:
-      'postgres://kllrvryxgafhpw:08508aaca88a87e28a29dbb0b2169737305514b00cc04767f37ec9ddfdb6bf58@ec2-54-75-226-5.eu-west-1.compute.amazonaws.com:5432/d3tcigb8pga445?ssl=true',
+    connection: config.pgURI,
     pool: { min: 0, max: 2 },
     useNullAsDefault: true
   },
 
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
+    connection: config.pgURI,
     migrations: {
       directory: './db/migrations'
     },
@@ -20,4 +21,6 @@ const config = {
   }
 };
 
-export default config;
+const currentConfig = pgConfigs[config.env] || pgConfigs.development;
+
+export default currentConfig;
