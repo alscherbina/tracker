@@ -24,6 +24,7 @@ const c = controllerHandler;
 const router = express.Router();
 
 router.post('/tasks', c(controllers.tasks.addTask));
+router.get('/tasks', c(controllers.tasks.listTasks));
 
 router.get('/parse', async (req, res) => {
   const options = {

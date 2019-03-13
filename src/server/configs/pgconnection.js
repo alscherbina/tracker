@@ -5,7 +5,8 @@ const pgConfigs = {
     client: 'pg',
     connection: config.pgURI,
     pool: { min: 0, max: 2 },
-    useNullAsDefault: true
+    useNullAsDefault: true,
+    asyncStackTraces: true
   },
 
   production: {
