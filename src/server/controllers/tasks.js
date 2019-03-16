@@ -13,6 +13,7 @@ export async function addTask(req) {
 }
 
 export async function listTasks(req, res) {
-  const tasks = await tasksDao.listTasks();
+  const { sortBy, order } = req.query;
+  const tasks = await tasksDao.listTasks(sortBy, order);
   res.json(tasks);
 }

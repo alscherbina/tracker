@@ -8,7 +8,9 @@ export async function addTask(task) {
   return id;
 }
 
-export async function listTasks() {
-  const tasks = await db('task').select('id', 'type', 'url', 'schedule', 'title', 'active', 'creation_date').orderBy('creation_date');
+export async function listTasks(sortBy, order) {
+  const tasks = await db('task')
+    .select('id', 'type', 'url', 'schedule', 'title', 'active', 'creation_date')
+    .orderBy(sortBy, order);
   return tasks;
 }

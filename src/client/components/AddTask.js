@@ -3,8 +3,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react';
 import { Formik, Field, Form } from 'formik';
-import axios from '../axios-tasks';
 import * as Yup from 'yup';
+import axios from '../axios-tasks';
 
 export default class AddTask extends Component {
   state = {
