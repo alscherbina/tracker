@@ -78,7 +78,7 @@ export default class TasksList extends React.Component {
       </tr>
     ));
 
-    const tableHeaderCoulumns = this.columns.map(column => {
+    const tableHeaderColumns = this.columns.map(column => {
       const {
         sortBy: { name: currentSortName, asc: isCurrentSortOrderAsc }
       } = this.state;
@@ -102,7 +102,7 @@ export default class TasksList extends React.Component {
     return (
       <table className={tableClasses}>
         <thead>
-          <tr>{tableHeaderCoulumns}</tr>
+          <tr>{tableHeaderColumns}</tr>
         </thead>
         <tbody>{tasksList}</tbody>
       </table>

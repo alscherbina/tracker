@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '@fortawesome/fontawesome-free/js/all.min';
 import 'bulma/css/bulma.min.css';
 import './css/app.css';
 import '@babel/polyfill';
