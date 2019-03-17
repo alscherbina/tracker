@@ -27,6 +27,7 @@ export default class AddTask extends Component {
     try {
       const result = await axios.post('/tasks', { data: values });
       formikbag.setSubmitting(false);
+      formikbag.setStatus({ submitted: true });
       console.log(result);
     } catch (error) {
       formikbag.setSubmitting(false);
@@ -123,45 +124,63 @@ const TaskInputField = ({
   );
 };
 
-const TaskForm = ({ toggleModal, isSubmitting, isValid, handleSubmit }) => (
-  <div className="modal is-active">
-    <div className="modal-background" onClick={toggleModal} />
-    <div className="modal-card">
-      <header className="modal-card-head">
-        <p className="modal-card-title">Add Task</p>
-        <button className="delete" aria-label="close" type="button" onClick={toggleModal} />
-      </header>
-      <section className="modal-card-body">
-        <Form>
-          <fieldset disabled={isSubmitting}>
-            <Field
-              name="type"
-              type="select"
-              label="Task Type"
-              placeholder="Choose Type"
-              selectValues={['rozetka', ['custom']]}
-              component={TaskSelectField}
-            />
-            <Field name="url" placeholder="URL" label="Page URL" component={TaskInputField} />
-            <Field name="title" placeholder="Title" label="Task Title" component={TaskInputField} />
-            <Field name="schedule" placeholder="Cron expression" label="Schedule" component={TaskInputField} />
-            <input type="submit" className="is-invisible" />
-          </fieldset>
-        </Form>
-      </section>
-      <footer className="modal-card-foot">
-        <button
-          className={`button is-success ${isSubmitting ? 'is-loading' : ''}`}
-          type="button"
-          disabled={!isValid}
-          onClick={handleSubmit}
-        >
-          Save changes
-        </button>
-        <button className="button" type="button" onClick={toggleModal}>
-          Cancel
-        </button>
-      </footer>
+const TaskForm = ({ toggleModal, isSubmitting, isValid, handleSubmit, status }) => {
+  let cardBody = (
+    <Form>
+      <fieldset disabled={isSubmitting}>
+        <Field
+          name="type"
+          type="select"
+          label="Task Type"
+          placeholder="Choose Type"
+          selectValues={['rozetka', ['custom']]}
+          component={TaskSelectField}
+        />
+        <Field name="url" placeholder="URL" label="Page URL" component={TaskInputField} />
+        <Field name="title" placeholder="Title" label="Task Title" component={TaskInputField} />
+        <Field name="schedule" placeholder="Cron expression" label="Schedule" component={TaskInputField} />
+        <input type="submit" className="is-invisible" />
+      </fieldset>
+    </Form>
+  );
+
+  let footerButtons = (
+    <>
+      <button
+        className={`button is-success ${isSubmitting ? 'is-loading' : ''}`}
+        type="button"
+        disabled={isSubmitting}
+        onClick={handleSubmit}
+      >
+        Save changes
+      </button>
+      <button className="button" type="button" onClick={toggleModal}>
+        Cancel
+      </button>
+    </>
+  );
+
+  const formSubmitted = status && status.submitted;
+  if (formSubmitted) {
+    cardBody = <div className="content subtitle">Task was added successfully!</div>;
+    footerButtons = (
+      <button className="button" type="button" onClick={toggleModal}>
+        Ok
+      </button>
+    );
+  }
+
+  return (
+    <div className="modal is-active">
+      <div className="modal-background" onClick={toggleModal} />
+      <div className="modal-card">
+        <header className="modal-card-head">
+          <p className="modal-card-title">Add Task</p>
+          <button className="delete" aria-label="close" type="button" onClick={toggleModal} />
+        </header>
+        <section className="modal-card-body">{cardBody}</section>
+        <footer className="modal-card-foot">{footerButtons}</footer>
+      </div>
     </div>
-  </div>
-);
+  );
+};
