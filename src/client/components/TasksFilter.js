@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../store/actions';
 
-export default function TasksFilter() {
+function TasksFilter(props) {
   return (
     <div className="box has-background-light">
       <form className="form-horizontal">
@@ -29,7 +31,7 @@ export default function TasksFilter() {
           </div>
           <div className="field is-grouped is-grouped-centered">
             <div className="control">
-              <button className="button is-link" type="button">
+              <button className="button is-link" type="button" onClick={props.requestRefresh}>
                 Filter
               </button>
             </div>
@@ -44,3 +46,16 @@ export default function TasksFilter() {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  refreshListRequested: state.filter.refreshListRequested
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestRefresh: () => dispatch(actions.refreshList())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TasksFilter);

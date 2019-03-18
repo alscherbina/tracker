@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { connect } from 'react-redux';
 import axios from '../axios-tasks';
+import * as actions from '../store/actions';
 
-export default class TasksList extends React.Component {
+class TasksList extends React.Component {
   state = {
     tasks: [],
     sortBy: {
@@ -22,20 +24,23 @@ export default class TasksList extends React.Component {
     { title: 'Type', name: 'type' }
   ];
 
-  componentDidMount() {
-    this.loadTasks();
-  }
+  componentDidMount = () => {
+    this.props.requestRefresh();
+  };
 
-  async componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate = async (prevProps, prevState) => {
     const { sortBy: currentSortBy } = this.state;
     const { sortBy: prevSortBy } = prevState;
     if (currentSortBy.name !== prevSortBy.name || currentSortBy.asc !== prevSortBy.asc) {
+      this.props.requestRefresh();
+    }
+
+    if (this.props.refreshListRequested) {
       this.loadTasks();
     }
-  }
+  };
 
   loadTasks = async () => {
-    this.setState({ loading: true });
     const {
       sortBy: { name, asc }
     } = this.state;
@@ -45,7 +50,8 @@ export default class TasksList extends React.Component {
         order: asc ? 'asc' : 'desc'
       }
     });
-    this.setState({ tasks: result.data, loading: false });
+    this.props.listRefreshed();
+    this.setState({ tasks: result.data });
   };
 
   onClickSortingColumn = name => () => {
@@ -62,7 +68,8 @@ export default class TasksList extends React.Component {
   };
 
   render() {
-    const { tasks, loading } = this.state;
+    const { tasks } = this.state;
+    const { refreshListRequested: loading } = this.props;
 
     const tasksList = tasks.map(item => (
       <tr key={item.id} className={item.active ? '' : 'has-text-grey-light'}>
@@ -137,3 +144,17 @@ const SortingTitle = ({ title, order, onClick }) => {
     </th>
   );
 };
+
+const mapStateToProps = state => ({
+  refreshListRequested: state.filter.refreshListRequested
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestRefresh: () => dispatch(actions.refreshList()),
+  listRefreshed: () => dispatch(actions.listRefreshed())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TasksList);
