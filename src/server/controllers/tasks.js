@@ -15,5 +15,5 @@ export async function addTask(req) {
 export async function listTasks(req, res) {
   const { sortBy, order } = req.query;
   const tasks = await tasksDao.listTasks(sortBy, order);
-  res.json(tasks);
+  return tasks;
 }
