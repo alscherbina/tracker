@@ -1,1 +1,1 @@
-export { refreshList, listRefreshed } from './tasks';
+export { setTasksFilter, refreshList, listRefreshed } from './tasks';

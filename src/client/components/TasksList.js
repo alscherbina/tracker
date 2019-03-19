@@ -146,7 +146,7 @@ const SortingTitle = ({ title, order, onClick }) => {
 };
 
 const mapStateToProps = state => ({
-  refreshListRequested: state.filter.refreshListRequested
+  refreshListRequested: state.tasks.refreshListRequested
 });
 
 const mapDispatchToProps = dispatch => ({

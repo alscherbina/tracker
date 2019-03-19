@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import filterReducer from './filterReducer';
+import tasksListReducer from './tasksList';
 
-const reducer = combineReducers({ filter: filterReducer });
+const reducer = combineReducers({ tasks: tasksListReducer });
 
 export default reducer;

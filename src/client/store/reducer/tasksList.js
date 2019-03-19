@@ -1,11 +1,11 @@
 import * as actionTypes from '../actions/actionTypes';
 
-const filterReducer = (state = {}, action) => {
+const tasksListReducer = (state = {}, action) => {
   switch (action.type) {
-    case actionTypes.CHANGE_FILTER_TEXT:
+    case actionTypes.SET_TASKS_FILTER:
       return {
         ...state,
-        text: action.payload
+        filter: action.payload
       };
     case actionTypes.REFRESH_LIST:
       return {
@@ -22,4 +22,4 @@ const filterReducer = (state = {}, action) => {
   }
 };
 
-export default filterReducer;
+export default tasksListReducer;
