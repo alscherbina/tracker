@@ -50,7 +50,7 @@ class TasksFilter extends React.Component {
                     value=""
                     required="required"
                     checked={state.tasksStatus === ''}
-                    onClick={this.onFormFieldChange}
+                    onChange={this.onFormFieldChange}
                   />
                   All
                 </label>
@@ -61,7 +61,7 @@ class TasksFilter extends React.Component {
                     value="active"
                     required="required"
                     checked={state.tasksStatus === 'active'}
-                    onClick={this.onFormFieldChange}
+                    onChange={this.onFormFieldChange}
                   />
                   Active
                 </label>
@@ -72,7 +72,7 @@ class TasksFilter extends React.Component {
                     value="inactive"
                     required="required"
                     checked={state.tasksStatus === 'inactive'}
-                    onClick={this.onFormFieldChange}
+                    onChange={this.onFormFieldChange}
                   />
                   Inactive
                 </label>
