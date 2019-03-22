@@ -7,6 +7,7 @@ const pgConfigs = {
     pool: { min: 0, max: 2 },
     useNullAsDefault: true,
     asyncStackTraces: true
+    //,debug: true
   },
 
   production: {

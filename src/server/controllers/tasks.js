@@ -12,8 +12,9 @@ export async function addTask(req) {
   return tasksDao.addTask(task);
 }
 
-export async function listTasks(req, res) {
-  const { sortBy, order } = req.query;
-  const tasks = await tasksDao.listTasks(sortBy, order);
+export async function listTasks(req) {
+  const { sortBy, order, tasksStatus, searchText } = req.query;
+  const filter = { tasksStatus, searchText };
+  const tasks = await tasksDao.listTasks(filter, sortBy, order);
   return tasks;
 }

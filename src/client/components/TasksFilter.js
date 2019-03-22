@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../store/actions';
 
 class TasksFilter extends React.Component {
-  state = {};
+  state = { tasksStatus: '', searchText: '' };
 
   componentDidMount = () => {};
 
@@ -19,7 +19,7 @@ class TasksFilter extends React.Component {
   };
 
   render() {
-    const { props } = this;
+    const { props, state } = this;
     return (
       <div className="box has-background-light">
         <form className="form-horizontal">
@@ -34,7 +34,7 @@ class TasksFilter extends React.Component {
                   type="text"
                   placeholder="Search text ..."
                   className="input"
-                  value={this.state.searchText || ''}
+                  value={state.searchText}
                   onChange={this.onFormFieldChange}
                 />
               </div>
@@ -44,15 +44,36 @@ class TasksFilter extends React.Component {
               <label className="label">Status</label>
               <div className="control">
                 <label className="radio">
-                  <input type="radio" name="taskStatus" value="All" defaultChecked required="required" />
+                  <input
+                    type="radio"
+                    name="tasksStatus"
+                    value=""
+                    required="required"
+                    checked={state.tasksStatus === ''}
+                    onClick={this.onFormFieldChange}
+                  />
                   All
                 </label>
                 <label className="radio">
-                  <input type="radio" name="taskStatus" value="Active" required="required" />
+                  <input
+                    type="radio"
+                    name="tasksStatus"
+                    value="active"
+                    required="required"
+                    checked={state.tasksStatus === 'active'}
+                    onClick={this.onFormFieldChange}
+                  />
                   Active
                 </label>
                 <label className="radio">
-                  <input type="radio" name="taskStatus" value="Inactive" required="required" />
+                  <input
+                    type="radio"
+                    name="tasksStatus"
+                    value="inactive"
+                    required="required"
+                    checked={state.tasksStatus === 'inactive'}
+                    onClick={this.onFormFieldChange}
+                  />
                   Inactive
                 </label>
               </div>

@@ -41,16 +41,21 @@ class TasksList extends React.Component {
   };
 
   loadTasks = async () => {
+    let result;
     const {
       sortBy: { name, asc }
     } = this.state;
-    const result = await axios.get('/tasks', {
-      params: {
-        sortBy: name,
-        order: asc ? 'asc' : 'desc'
-      }
-    });
-    this.props.listRefreshed();
+    try {
+      result = await axios.get('/tasks', {
+        params: {
+          ...this.props.filter,
+          sortBy: name,
+          order: asc ? 'asc' : 'desc'
+        }
+      });
+    } finally {
+      this.props.listRefreshed();
+    }
     this.setState({ tasks: result.data });
   };
 
@@ -146,7 +151,8 @@ const SortingTitle = ({ title, order, onClick }) => {
 };
 
 const mapStateToProps = state => ({
-  refreshListRequested: state.tasks.refreshListRequested
+  refreshListRequested: state.tasks.refreshListRequested,
+  filter: state.tasks.filter
 });
 
 const mapDispatchToProps = dispatch => ({
