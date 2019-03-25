@@ -1,4 +1,5 @@
 import * as tasksDao from '../model/tasks';
+import * as scheduler from '../model/scheduler';
 
 export async function addTask(req) {
   const task = {};
@@ -9,7 +10,8 @@ export async function addTask(req) {
     task.schedule = data.schedule;
     task.type = data.type;
   }
-  return tasksDao.addTask(task);
+  const addedTask = await tasksDao.addTask(task);
+  scheduler.scheduleJob(addedTask[0]);
 }
 
 export async function listTasks(req) {

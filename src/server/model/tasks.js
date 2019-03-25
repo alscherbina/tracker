@@ -3,10 +3,10 @@
 import db from './db';
 
 export async function addTask(task) {
-  const id = await db('task')
-    .returning('id')
+  const result = await db('task')
+    .returning('*')
     .insert(task);
-  return id;
+  return result;
 }
 
 export async function listTasks(filter, sortBy, order) {
