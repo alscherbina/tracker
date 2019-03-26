@@ -1,6 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-restricted-syntax */
 import * as cron from 'node-cron';
+import cheerio from 'cheerio';
+import request from 'request-promise-native';
 import db from './db';
 
 const jobs = new Map();
@@ -16,7 +18,20 @@ function removeJob(taskId) {
 function scheduleJob(task) {
   removeJob(task.id);
   if (cron.validate(task.schedule)) {
-    const job = cron.schedule(task.schedule, () => {
+    const job = cron.schedule(task.schedule, async () => {
+      const options = {
+        uri: task.url,
+        transform: body => {
+          return cheerio.load(body);
+        }
+      };
+      try {
+        const $ = await request(options);
+        const result = $('meta[itemprop="price"]').attr('content');
+        await db('journal').insert({ task_id: task.id, result });
+      } catch (err) {
+        console.log(err);
+      }
       console.log(`${new Date()}: Task #${task.id} executed!`);
     });
     jobs.set(task.id, job);

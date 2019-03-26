@@ -10,7 +10,16 @@ CREATE
         schedule VARCHAR(32) NOT NULL,
         title VARCHAR(256),
         active BOOLEAN NOT NULL DEFAULT TRUE,
-        creation_date TIMESTAMPTZ DEFAULT NOW() );
+        creation_date TIMESTAMPTZ DEFAULT NOW(TIMESTAMPTZ DEFAULT NOW() );
+
+
+CREATE TABLE journal (
+task_id INTEGER NOT NULL,
+execution_date TIMESTAMPTZ DEFAULT NOW(),
+result VARCHAR(256),
+CONSTRAINT unique_journal_record UNIQUE(task_id, execution_date),
+CONSTRAINT fk_journal_task FOREIGN KEY (task_id) REFERENCES task(id) ON DELETE CASCADE
+)
 
 INSERT
     INTO
