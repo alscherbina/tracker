@@ -1,5 +1,4 @@
-import * as tasksDao from '../model/tasks';
-import * as scheduler from '../model/scheduler';
+import * as services from '../model/services';
 
 export async function addTask(req) {
   const task = {};
@@ -9,14 +8,13 @@ export async function addTask(req) {
     task.url = data.url;
     task.schedule = data.schedule;
     task.type = data.type;
+    await services.createTask(task);
   }
-  const addedTask = await tasksDao.addTask(task);
-  scheduler.scheduleJob(addedTask[0]);
 }
 
 export async function listTasks(req) {
   const { sortBy, order, tasksStatus, searchText } = req.query;
   const filter = { tasksStatus, searchText };
-  const tasks = await tasksDao.listTasks(filter, sortBy, order);
+  const tasks = await services.listTasks(filter, sortBy, order);
   return tasks;
 }
