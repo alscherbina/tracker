@@ -25,13 +25,11 @@ export default class AddTask extends Component {
 
   formSubmit = async (values, formikbag) => {
     try {
-      const result = await axios.post('/tasks', { data: values });
+      await axios.post('/tasks', { data: values });
       formikbag.setSubmitting(false);
       formikbag.setStatus({ submitted: true });
-      console.log(result);
     } catch (error) {
       formikbag.setSubmitting(false);
-      console.log(error);
     }
   };
 

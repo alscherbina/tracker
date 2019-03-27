@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import axios from '../axios-tasks';
 import * as actions from '../store/actions';
+import DeleteTask from './DeleteTask';
 
 class TasksList extends React.Component {
   state = {
@@ -11,17 +12,19 @@ class TasksList extends React.Component {
     sortBy: {
       name: 'id',
       asc: true
-    }
+    },
+    deletingTaskId: undefined
   };
 
   columns = [
-    { title: 'Id', name: 'id' },
-    { title: 'Title', name: 'title' },
-    { title: 'URL', name: 'url' },
-    { title: 'Schedule', name: 'schedule' },
-    { title: 'Status', name: 'active' },
-    { title: 'Created', name: 'creation_date' },
-    { title: 'Type', name: 'type' }
+    { title: 'Id', name: 'id', sorting: true },
+    { title: 'Title', name: 'title', sorting: true },
+    { title: 'URL', name: 'url', sorting: true },
+    { title: 'Schedule', name: 'schedule', sorting: true },
+    { title: 'Status', name: 'active', sorting: true },
+    { title: 'Created', name: 'creation_date', sorting: true },
+    { title: 'Type', name: 'type', sorting: true },
+    { title: 'Actions', name: 'actions', sorting: false }
   ];
 
   componentDidMount = () => {
@@ -72,8 +75,16 @@ class TasksList extends React.Component {
     });
   };
 
+  onClickDelete = taskId => () => {
+    this.setState({ deletingTaskId: taskId });
+  };
+
+  onFinishDelete = () => {
+    this.setState({ deletingTaskId: null });
+  };
+
   render() {
-    const { tasks } = this.state;
+    const { tasks, deletingTaskId } = this.state;
     const { refreshListRequested: loading } = this.props;
 
     const tasksList = tasks.map(item => (
@@ -87,6 +98,9 @@ class TasksList extends React.Component {
         <td>{item.active ? 'active' : 'inactive'}</td>
         <td>{new Date(item.creation_date).toLocaleString()}</td>
         <td>{item.type}</td>
+        <td>
+          <button className="delete" type="button" aria-label="delete" onClick={this.onClickDelete(item.id)} />
+        </td>
       </tr>
     ));
 
@@ -98,31 +112,40 @@ class TasksList extends React.Component {
       if (column.name === currentSortName) {
         order = isCurrentSortOrderAsc ? 'asc' : 'desc';
       }
-      return (
-        <SortingTitle
-          key={column.name}
-          title={column.title}
-          order={order}
-          onClick={this.onClickSortingColumn(column.name)}
-        />
-      );
+      let columnHeader = null;
+      if (column.sorting) {
+        columnHeader = (
+          <SortingTableTitle
+            key={column.name}
+            title={column.title}
+            order={order}
+            onClick={this.onClickSortingColumn(column.name)}
+          />
+        );
+      } else {
+        columnHeader = <PlainTableTitle key={column.name} title={column.title} />;
+      }
+      return columnHeader;
     });
 
     let tableClasses = 'table is-bordered is-striped is-narrow is-hoverable content is-small';
     if (loading) tableClasses += ' custom-loading';
 
     return (
-      <table className={tableClasses}>
-        <thead>
-          <tr>{tableHeaderColumns}</tr>
-        </thead>
-        <tbody>{tasksList}</tbody>
-      </table>
+      <>
+        <table className={tableClasses}>
+          <thead>
+            <tr>{tableHeaderColumns}</tr>
+          </thead>
+          <tbody>{tasksList}</tbody>
+        </table>
+        {deletingTaskId ? <DeleteTask taskId={deletingTaskId} onFinishDelete={this.onFinishDelete} /> : ''}
+      </>
     );
   }
 }
 
-const SortingTitle = ({ title, order, onClick }) => {
+const SortingTableTitle = ({ title, order, onClick }) => {
   let orderingArrows = '⭥';
   let orderingArrowsClasses = 'level-right content';
 
@@ -145,6 +168,16 @@ const SortingTitle = ({ title, order, onClick }) => {
       <div className="level custom-table-title-clickable">
         <span className="level-left">{title}</span>
         <span className={orderingArrowsClasses}>{orderingArrows}</span>
+      </div>
+    </th>
+  );
+};
+
+const PlainTableTitle = ({ title }) => {
+  return (
+    <th>
+      <div className="level">
+        <span className="level-left">{title}</span>
       </div>
     </th>
   );

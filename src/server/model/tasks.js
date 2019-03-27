@@ -26,3 +26,9 @@ export async function listTasks(filter, sortBy, order) {
   const tasks = await query;
   return tasks;
 }
+
+export async function deleteTask(taskId) {
+  await db('task')
+    .where('id', taskId)
+    .del();
+}

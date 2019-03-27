@@ -11,4 +11,9 @@ async function listTasks(filter, sortBy, order) {
   return tasks;
 }
 
-export { createTask, listTasks };
+async function deleteTask(taskId) {
+  await tasksDao.deleteTask(taskId);
+  scheduler.removeJob(taskId);
+}
+
+export { createTask, listTasks, deleteTask };

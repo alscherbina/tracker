@@ -18,3 +18,8 @@ export async function listTasks(req) {
   const tasks = await services.listTasks(filter, sortBy, order);
   return tasks;
 }
+
+export async function deleteTask(req) {
+  const { taskId } = req.params;
+  await services.deleteTask(taskId);
+}
