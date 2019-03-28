@@ -5,13 +5,13 @@ import cheerio from 'cheerio';
 import request from 'request-promise-native';
 import db from './db';
 
-const jobs = new Map();
+const jobs = {};
 
 function removeJob(taskId) {
-  if (jobs.has(taskId)) {
-    const job = jobs.get(taskId);
+  if (jobs[taskId]) {
+    const job = jobs[taskId];
     job.destroy();
-    jobs.delete(taskId);
+    delete jobs[taskId];
   }
 }
 
@@ -34,7 +34,7 @@ function scheduleJob(task) {
       }
       console.log(`${new Date()}: Task #${task.id} executed!`);
     });
-    jobs.set(task.id, job);
+    jobs[task.id] = job;
   } else {
     console.log(`${new Date()}: Task #${task.id} schedule expression is not valid - '${task.schedule}'`);
   }
