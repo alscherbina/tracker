@@ -1,12 +1,23 @@
 /* eslint-disable func-names */
 /* eslint-disable class-methods-use-this */
+import * as pgErrors from 'pg-error-constants';
 import db from './db';
+import { ModelError } from './errors/ModelError';
+import errorCodes from './errors/errorCodes';
 
 export async function addTask(task) {
-  const result = await db('task')
-    .returning('*')
-    .insert(task);
-  return result;
+  try {
+    const result = await db('task')
+      .returning('*')
+      .insert(task);
+    return result;
+  } catch (err) {
+    if (err.code === pgErrors.UNIQUE_VIOLATION && err.constraint === 'task_url_key') {
+      err.message = `Task with this URL already exists (${task.url})`;
+      err.code = errorCodes.TASK_URL_KEY_DUPLICATE;
+    }
+    throw new ModelError(err);
+  }
 }
 
 export async function listTasks(filter, sortBy, order) {
