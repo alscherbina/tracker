@@ -23,6 +23,7 @@ const router = express.Router();
 
 router.post('/tasks', c(controllers.tasks.addTask));
 router.get('/tasks', c(controllers.tasks.listTasks));
+//router.get('/tasks', (req, res, next) => next({ message: 'Tasks listing error.' }));
 router.delete('/task/:taskId', c(controllers.tasks.deleteTask));
 
 export default router;

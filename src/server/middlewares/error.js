@@ -48,7 +48,7 @@ const converter = (err, req, res, next) => {
   } else if (!(err instanceof APIError)) {
     convertedError = new APIError({
       message: err.message,
-      status: err.status,
+      status: err.status || httpStatus.BAD_REQUEST,
       stack: err.stack
     });
   }

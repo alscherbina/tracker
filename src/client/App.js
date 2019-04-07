@@ -7,6 +7,7 @@ import '@babel/polyfill';
 import TasksList from './components/TasksList';
 import TasksFilter from './components/TasksFilter';
 import AddTask from './components/AddTask';
+import ErrorModal from './components/ErrorModal';
 import store from './store';
 
 const contentNode = document.getElementById('contents');
@@ -22,6 +23,7 @@ const app = (
         <TasksList />
       </div>
     </div>
+    <ErrorModal />
   </Provider>
 );
 

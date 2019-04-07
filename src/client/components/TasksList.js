@@ -56,10 +56,12 @@ class TasksList extends React.Component {
           order: asc ? 'asc' : 'desc'
         }
       });
+      this.setState({ tasks: result.data });
+    } catch (err) {
+      this.props.reportError(err);
     } finally {
       this.props.listRefreshed();
     }
-    this.setState({ tasks: result.data });
   };
 
   onClickSortingColumn = name => () => {
@@ -190,7 +192,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   requestRefresh: () => dispatch(actions.refreshList()),
-  listRefreshed: () => dispatch(actions.listRefreshed())
+  listRefreshed: () => dispatch(actions.listRefreshed()),
+  reportError: error => dispatch(actions.generalShowError(error))
 });
 
 export default connect(
