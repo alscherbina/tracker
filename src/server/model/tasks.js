@@ -4,6 +4,7 @@ import * as pgErrors from 'pg-error-constants';
 import db from './db';
 import { ModelError } from './errors/ModelError';
 import errorCodes from './errors/errorCodes';
+import log from '../configs/logger';
 
 export async function addTask(task) {
   try {
@@ -15,6 +16,9 @@ export async function addTask(task) {
     if (err.code === pgErrors.UNIQUE_VIOLATION && err.constraint === 'task_url_key') {
       err.message = `Task with this URL already exists (${task.url})`;
       err.code = errorCodes.TASK_URL_KEY_DUPLICATE;
+      log.verbose(err);
+    } else {
+      log.error(err);
     }
     throw new ModelError(err);
   }
@@ -42,4 +46,5 @@ export async function deleteTask(taskId) {
   await db('task')
     .where('id', taskId)
     .del();
+  log.verbose(`Task #${taskId} deleted.`);
 }

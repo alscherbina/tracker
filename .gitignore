@@ -9,6 +9,9 @@
 # production
 /public
 
+#dev logs
+/log
+
 # misc
 .DS_Store
 .env.local

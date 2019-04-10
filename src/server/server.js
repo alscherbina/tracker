@@ -1,7 +1,8 @@
 import app from './configs/express';
 import * as scheduler from './model/scheduler';
+import log from './configs/logger';
 
 app.listen(3000, async () => {
   await scheduler.init();
-  console.log('App started on port 3000');
+  log.info('App started on port 3000');
 });

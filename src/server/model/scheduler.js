@@ -4,6 +4,7 @@ import * as cron from 'node-cron';
 import cheerio from 'cheerio';
 import request from 'request-promise-native';
 import db from './db';
+import log from '../configs/logger';
 
 const jobs = {};
 
@@ -12,6 +13,7 @@ function removeJob(taskId) {
     const job = jobs[taskId];
     job.destroy();
     delete jobs[taskId];
+    log.verbose(`Task #${taskId} unscheduled.`);
   }
 }
 
@@ -30,13 +32,13 @@ function scheduleJob(task) {
         const result = $('meta[itemprop="price"]').attr('content');
         await db('journal').insert({ task_id: task.id, result });
       } catch (err) {
-        console.log(err);
+        log.err(err);
       }
-      console.log(`${new Date()}: Task #${task.id} executed!`);
+      log.verbose(`Task #${task.id} executed!`);
     });
     jobs[task.id] = job;
   } else {
-    console.log(`${new Date()}: Task #${task.id} schedule expression is not valid - '${task.schedule}'`);
+    log.verbose(`Task #${task.id} schedule expression is not valid - '${task.schedule}'`);
   }
 }
 
