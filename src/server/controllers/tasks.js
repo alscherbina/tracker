@@ -1,8 +1,8 @@
-import * as services from '../model/services';
+import * as model from '../model';
 
 export async function getTask(req) {
   const { taskId } = req.params;
-  const task = await services.getTask(taskId);
+  const task = await model.getTask(taskId);
   return task;
 }
 
@@ -14,18 +14,18 @@ export async function addTask(req) {
     task.url = data.url;
     task.schedule = data.schedule;
     task.type = data.type;
-    await services.createTask(task);
+    await model.createTask(task);
   }
 }
 
 export async function listTasks(req) {
   const { sortBy, order, tasksStatus, searchText } = req.query;
   const filter = { tasksStatus, searchText };
-  const tasks = await services.listTasks(filter, sortBy, order);
+  const tasks = await model.listTasks(filter, sortBy, order);
   return tasks;
 }
 
 export async function deleteTask(req) {
   const { taskId } = req.params;
-  await services.deleteTask(taskId);
+  await model.deleteTask(taskId);
 }

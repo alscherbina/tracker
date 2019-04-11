@@ -1,3 +1,7 @@
+/**
+ * Model facade.
+ * All model interactions should be done using this interface only.
+ */
 import * as tasksDao from './tasks';
 import * as scheduler from './scheduler';
 
