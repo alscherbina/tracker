@@ -6,6 +6,13 @@ import { ModelError } from './errors/ModelError';
 import errorCodes from './errors/errorCodes';
 import log from '../configs/logger';
 
+export async function getTask(taskId) {
+  const task = await db('task')
+    .select()
+    .where('id', taskId);
+  return task;
+}
+
 export async function addTask(task) {
   try {
     const result = await db('task')

@@ -1,5 +1,11 @@
 import * as services from '../model/services';
 
+export async function getTask(req) {
+  const { taskId } = req.params;
+  const task = await services.getTask(taskId);
+  return task;
+}
+
 export async function addTask(req) {
   const task = {};
   if (req.body && req.body.data) {
