@@ -1,5 +1,7 @@
 import express from 'express';
+import validate from 'express-validation';
 import controllers from '../controllers';
+import * as validations from '../validations/task.validation';
 
 /**
  * Handles controller execution and responds to user (API version).
@@ -21,10 +23,10 @@ const c = controllerHandler;
 
 const router = express.Router();
 
-router.get('/tasks/:taskId', c(controllers.tasks.getTask));
-router.post('/tasks', c(controllers.tasks.addTask));
+router.get('/tasks/:taskId', validate(validations.getTask), c(controllers.tasks.getTask));
+router.post('/tasks', validate(validations.addTask), c(controllers.tasks.addTask));
 router.get('/tasks', c(controllers.tasks.listTasks));
 //router.get('/tasks', (req, res, next) => next({ message: 'Tasks listing error.' }));
-router.delete('/task/:taskId', c(controllers.tasks.deleteTask));
+router.delete('/task/:taskId', validate(validations.deleteTask), c(controllers.tasks.deleteTask));
 
 export default router;

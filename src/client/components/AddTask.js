@@ -66,7 +66,9 @@ const TaskSchema = Yup.object().shape({
     .min(5, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
-  schedule: Yup.string().required('Required')
+  schedule: Yup.string()
+    .required('Required')
+    .matches(/^(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])|\*\/([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])) (\*|([0-9]|1[0-9]|2[0-3])|\*\/([0-9]|1[0-9]|2[0-3])) (\*|([1-9]|1[0-9]|2[0-9]|3[0-1])|\*\/([1-9]|1[0-9]|2[0-9]|3[0-1])) (\*|([1-9]|1[0-2])|\*\/([1-9]|1[0-2])) (\*|([0-6])|\*\/([0-6]))$/, 'Not a valid cron expression')
 });
 
 const TaskSelectField = ({
