@@ -3,6 +3,7 @@ import expressValidation from 'express-validation';
 import { APIError } from '../utils/APIError';
 import config from '../configs/vars';
 import { ModelError } from '../model/errors/ModelError';
+import log from '../configs/logger';
 
 /**
  * Error handler. Send stacktrace only during development
@@ -15,6 +16,9 @@ const handler = (err, req, res, next) => {
     errors: err.errors,
     stack: err.stack
   };
+
+  // add this line to include winston logging
+  log.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
 
   if (config.env !== 'development') {
     delete response.stack;

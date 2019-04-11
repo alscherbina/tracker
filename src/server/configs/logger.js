@@ -47,6 +47,7 @@ if (config.env !== 'production') {
   );
 }
 
+//to use in Morgan
 logger.stream = {
   write: message => {
     logger.info(message.trim());
