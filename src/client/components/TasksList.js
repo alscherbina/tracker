@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import axios from '../axios-tasks';
 import * as actions from '../store/actions';
 import DeleteTask from './DeleteTask';
+import { Link } from 'react-router-dom';
 
 class TasksList extends React.Component {
   state = {
@@ -91,7 +92,9 @@ class TasksList extends React.Component {
 
     const tasksList = tasks.map(item => (
       <tr key={item.id} className={item.active ? '' : 'has-text-grey-light'}>
-        <td>{item.id}</td>
+        <td>
+          <Link to={`/tasks/${item.id}`}>{item.id}</Link>
+        </td>
         <td>{item.title}</td>
         <td>
           <a href={item.url}>{item.url}</a>
