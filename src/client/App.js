@@ -25,7 +25,6 @@ const tasksList = () => (
         <TasksList />
       </div>
     </div>
-    <ErrorModal />
   </>
 );
 
@@ -37,6 +36,7 @@ const app = (
         <Route path="/" component={tasksList} />
       </Switch>
     </BrowserRouter>
+    <ErrorModal />
   </Provider>
 );
 
