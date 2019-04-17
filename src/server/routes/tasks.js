@@ -26,7 +26,8 @@ const router = express.Router();
 router.get('/tasks/:taskId', validate(validations.getTask), c(controllers.tasks.getTask));
 router.post('/tasks', validate(validations.addTask), c(controllers.tasks.addTask));
 router.get('/tasks', c(controllers.tasks.listTasks));
-//router.get('/tasks', (req, res, next) => next({ message: 'Tasks listing error.' }));
 router.delete('/task/:taskId', validate(validations.deleteTask), c(controllers.tasks.deleteTask));
+router.get('/journal/:taskId', c(controllers.journal.getJournal));
+router.all('*', (req, res) => res.sendStatus(404));
 
 export default router;
