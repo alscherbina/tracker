@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../../../node_modules/react-vis/dist/style.css';
-import { XYPlot, LineSeries } from 'react-vis';
+import { FlexibleWidthXYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis } from 'react-vis';
 import { connect } from 'react-redux';
 import axios from '../axios-tasks';
 import * as actions from '../store/actions';
@@ -33,9 +33,18 @@ class TaskDetail extends Component {
     return (
       <div>
         <h1>Task #{match.params.id}</h1>
-        <XYPlot height={300} width={300}>
+        <FlexibleWidthXYPlot height={400}>
+          <VerticalGridLines />
+          <HorizontalGridLines />
+          <XAxis
+            tickFormat={value => {
+              const date = new Date(value);
+              return `${date.getMonth() + 1}.${date.getDate()}`;
+            }}
+          />
+          <YAxis />
           <LineSeries data={data} />
-        </XYPlot>
+        </FlexibleWidthXYPlot>
         <Link to="/">Back</Link>
       </div>
     );
