@@ -2,6 +2,7 @@ import express from 'express';
 import validate from 'express-validation';
 import controllers from '../controllers';
 import * as validations from '../validations/task.validation';
+import auth from '../middlewares/auth';
 
 /**
  * Handles controller execution and responds to user (API version).
@@ -23,6 +24,7 @@ const c = controllerHandler;
 
 const router = express.Router();
 
+router.use(auth);
 router.get('/tasks/:taskId', validate(validations.getTask), c(controllers.tasks.getTask));
 router.post('/tasks', validate(validations.addTask), c(controllers.tasks.addTask));
 router.get('/tasks', c(controllers.tasks.listTasks));
