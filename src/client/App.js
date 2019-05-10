@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import TasksList from './components/TasksList';
 import TasksFilter from './components/TasksFilter';
@@ -47,7 +47,9 @@ const mapStateToProps = state => ({
   authenticated: state.auth.signedIn
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(App);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    null
+  )(App)
+);
