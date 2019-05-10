@@ -42,7 +42,7 @@ class TaskDetail extends Component {
               return `${date.getMonth() + 1}.${date.getDate()}`;
             }}
           />
-          <YAxis />
+          <YAxis tickLabelAngle={25} width={40} tickPadding={0} />
           <LineSeries data={data} />
         </FlexibleWidthXYPlot>
         <Link to="/">Back</Link>
