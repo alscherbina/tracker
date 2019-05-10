@@ -1,18 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import 'bulma/css/bulma.min.css';
-import './css/app.css';
-import '@babel/polyfill';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+/* eslint-disable react/prop-types */
+import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 import TasksList from './components/TasksList';
 import TasksFilter from './components/TasksFilter';
 import AddTask from './components/AddTask';
-import ErrorModal from './components/ErrorModal';
-import store from './store';
 import TaskDetail from './components/TaskDetail';
-
-const contentNode = document.getElementById('contents');
+import SignInForm from './components/SignInForm';
 
 const tasksList = () => (
   <>
@@ -28,16 +22,32 @@ const tasksList = () => (
   </>
 );
 
-const app = (
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route path="/tasks/:id" component={TaskDetail} />
-        <Route path="/" component={tasksList} />
-      </Switch>
-    </BrowserRouter>
-    <ErrorModal />
-  </Provider>
-);
+class App extends Component {
+  componentDidMount = () => {};
 
-ReactDOM.render(app, contentNode);
+  render() {
+    const { authenticated } = this.props;
+
+    let route = <SignInForm />;
+
+    if (authenticated) {
+      route = (
+        <Switch>
+          <Route path="/tasks/:id" component={TaskDetail} />
+          <Route path="/" component={tasksList} />
+        </Switch>
+      );
+    }
+
+    return route;
+  }
+}
+
+const mapStateToProps = state => ({
+  authenticated: state.auth.signedIn
+});
+
+export default connect(
+  mapStateToProps,
+  null
+)(App);

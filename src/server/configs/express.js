@@ -1,6 +1,11 @@
 import express from 'express';
 import path from 'path';
 import morgan from 'morgan';
+import expressSession from 'express-session';
+import compression from 'compression';
+import helmet from 'helmet';
+import cors from 'cors';
+import passport from './passport';
 import routes from '../routes';
 import * as error from '../middlewares/error';
 import log from './logger';
@@ -12,6 +17,20 @@ app.use(morgan('combined', { stream: log.stream }));
 
 app.use(express.static('public'));
 app.use(express.json());
+
+// gzip compression
+app.use(compression());
+
+// secure apps by setting various HTTP headers
+app.use(helmet());
+
+// enable CORS - Cross Origin Resource Sharing
+app.use(cors());
+
+app.use(expressSession({ secret: 'keyboard cat' }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api', routes);
 

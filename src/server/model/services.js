@@ -4,6 +4,7 @@
  */
 import * as tasksDao from './tasks';
 import * as journalDao from './journal';
+import * as userDao from './user';
 import * as scheduler from './scheduler';
 
 export async function getTask(taskId) {
@@ -26,4 +27,8 @@ export async function deleteTask(taskId) {
 
 export async function getJournal(taskId) {
   return journalDao.getJournal(taskId);
+}
+
+export async function getUser(userId) {
+  return userDao.getUser(userId);
 }
