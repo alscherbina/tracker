@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 
-const isAPIError = payload => payload.response && payload.response.data;
+const isAPIError = payload => payload.response && payload.response.data && payload.response.data.message;
 
 export const generalShowError = error => {
   const payload = error || { code: 0, message: 'Error' };

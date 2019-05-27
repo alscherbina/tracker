@@ -55,7 +55,7 @@ class SignInForm extends Component {
                       <ErrorMessage name="password" component="div" />
                     </div>
                   </div>
-                  {status && status.msg && <div>{status.msg}</div>}
+                  {status && status.msg && <div className="has-text-danger">{status.msg}</div>}
                   <div className="field is-grouped is-grouped-centered">
                     <div className="control">
                       <button type="submit" className="button is-info" disabled={isSubmitting}>

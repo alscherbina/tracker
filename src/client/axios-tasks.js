@@ -16,7 +16,7 @@ instance.interceptors.response.use(
       new Cookies().set('signedIn', false, { path: '/' });
       store.dispatch(actions.signOut());
     }
-    //return Promise.reject(error);
+    return Promise.reject(error);
   }
 );
 
